@@ -11,6 +11,10 @@ This procedure was applied in this script to automate the build.
   * A Linux computer for cross-compilation
  * Software:
   * An operating Linux (tested on Linux Mint 18.1 (similar to Ubuntu 16.04)) with the C build tools installed (gcc, g++, make, ...)
+  ```
+  sudo apt install make gcc g++ git ncurses-dev bc autoconf libtool
+  ```
+  * raspbian lite version of 2017-04-10
 
 ## Procedure
 
@@ -49,3 +53,46 @@ We suppose that the IP address of the raspberry pi is ***192.168.1.20*** and the
 At this point, you may have a working linux rapsberrypi board.
 
 ### Second step: patching the kernel with the Xenomai extension
+
+Now it's time to patch our kernel to add realtime capabilities.
+The kernel version is 4.1.18 (result of **uname -a** command):
+```
+Linux raspberrypi 4.1.18-v7+ #846 SMP Thu Feb 25 14:22:53 GMT 2016 armv7l GNU/Linux
+```
+
+1. Installing the cross-compile toolchain, raspberry pi fundation explains how here:
+https://www.raspberrypi.org/documentation/linux/kernel/building.md.
+Get the source from git repository:
+
+    ```
+    sudo git clone https://github.com/raspberrypi/tools /opt/rpi3crosscompiletoolchain/tools
+    ```
+Then, add the toolchain to your PATH environment variable:
+    ```
+    echo PATH=\$PATH:/opt/rpi3crosscompiletoolchain/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin >> ~/.bashrc
+    source ~/.bashrc
+    ```
+You can check in your terminal that the toolchain is correclty installed by launching the command **arm-linux-gnueabihf-gcc**. You may get an error *arm-linux-gnueabihf-gcc: fatal error: no input files
+compilation terminated.* that's normal but if you read *command not found*, you have an installation issue.
+
+2. Patching the kernel. Download the xenomai archive :  http://xenomai.org/downloads/xenomai/stable/xenomai-3.0.3.tar.bz2. Uncompress it and you will find the patch for the 4.1.18 kernel in this directory: **xenomai-3.0.3/kernel/cobalt/arch/arm/patches/**. After clone the linux repository provided by raspberry and patch it:
+    ```
+    git clone https://github.com/raspberrypi/linux.git -b rpi-4.1.y --depth 1
+    cd xenomai-3.0.3
+     ./scripts/prepare-kernel.sh --arch=arm --linux=../linux --ipipe=kernel/cobalt/arch/arm/patches/ipipe-core-4.1.18-arm-8.patch
+    ```
+
+
+3. cross-compiling the kernel.
+    ```    
+    cd ../linux
+    time make -j 12 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
+
+    time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=INSTALL_MOD modules_install
+    where INSTALL_MOD is the directory where to copy the modules
+
+    time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_DTBS_PATH=INSTALL_DTBS dtbs_install
+    where INSTALL_DTBS is the directory where to copy the dtb files
+    ```
+
+Note that this guide presents a solution with the 4.1.18 kernel patch. A complete list of available patches can be found here: http://xenomai.org/downloads/ipipe/v4.x/arm/
