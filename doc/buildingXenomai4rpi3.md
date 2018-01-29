@@ -87,12 +87,10 @@ compilation terminated.* that's normal but if you read *command not found*, you 
     ```    
     cd ../linux
     time make -j 12 ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
-
     time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=INSTALL_MOD modules_install
-    where INSTALL_MOD is the directory where to copy the modules
-
     time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_DTBS_PATH=INSTALL_DTBS dtbs_install
-    where INSTALL_DTBS is the directory where to copy the dtb files
     ```
+    where INSTALL_MOD is the target directory where to copy the modules
+    where INSTALL_DTBS is the target directory where to copy the dtb files
 
 Note that this guide presents a solution with the 4.1.18 kernel patch. A complete list of available patches can be found here: http://xenomai.org/downloads/ipipe/v4.x/arm/
