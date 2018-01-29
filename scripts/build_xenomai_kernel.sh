@@ -1,11 +1,11 @@
 #!/bin/sh
 
-sudo apt install make gcc g++ git ncurses-dev bc autoconf libtool autotools
+sudo apt install make gcc g++ git ncurses-dev bc autoconf libtool
 
-mkdir -p $USER/dev/rpi_xenomai
-cd $USER/dev/rpi_xenomai
+mkdir -p /home/$USER/dev/rpi_xenomai
+cd /home/$USER/dev/rpi_xenomai
 wget http://xenomai.org/downloads/xenomai/stable/xenomai-3.0.3.tar.bz2
-tar xzf xenomai-3.0.3.tar.bz2
+tar xjf xenomai-3.0.3.tar.bz2
 git clone https://github.com/raspberrypi/linux.git -b rpi-4.1.y --depth 1
 cd xenomai-3.0.3
 ./scripts/prepare-kernel.sh --arch=arm --linux=../linux --ipipe=kernel/cobalt/arch/arm/patches/ipipe-core-4.1.18-arm-8.patch
@@ -23,11 +23,11 @@ echo "Kernel building finished "
 
 # compile the xenomai filesystem
 
-cd $USER/dev/rpi_xenomai/xenomai-3.0.3
+cd /home/$USER/dev/rpi_xenomai/xenomai-3.0.3
 ./configure --enable-smp --host=arm-linux-gnueabihf CFLAGS='-march=armv6' LDFLAGS='-march=armv6'
 time make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 12
 mkdir XENOMAI_DIR
-make DESTDIR=$USER/dev/rpi_xenomai/xenomai-3.0.3/XENOMAI_DIR install
+make DESTDIR=/home/$USER/dev/rpi_xenomai/xenomai-3.0.3/XENOMAI_DIR install
 tar cfv XENOMAI_DIR/usr XENOMAI_DIR.tar
 
 echo "================================================="
