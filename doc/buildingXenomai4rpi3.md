@@ -12,7 +12,7 @@ This procedure was applied in this script to automate the build.
  * Software:
   * An operating Linux (tested on Linux Mint 18.1 (similar to Ubuntu 16.04)) with the C build tools installed (gcc, g++, make, ...)
   ```
-  sudo apt install make gcc g++ git ncurses-dev bc autoconf libtool
+  sudo apt install make gcc g++ git ncurses-dev bc autoconf libtool autotools
   ```
   * raspbian lite version of 2017-04-10
 
@@ -94,3 +94,5 @@ compilation terminated.* that's normal but if you read *command not found*, you 
     where INSTALL_DTBS is the target directory where to copy the dtb files
 
 Note that this guide presents a solution with the 4.1.18 kernel patch. A complete list of available patches can be found here: http://xenomai.org/downloads/ipipe/v4.x/arm/
+
+4. Copy the files on the SD card of the Pi3 board.
