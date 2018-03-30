@@ -7,6 +7,6 @@ xenomai:
     # mount external volumes
     volumes:
         # content served by the server (read-only mount)
-        - ~/dev/xenomai:/opt/devel 
+        - /opt/dev/xenomai:/opt/devel 
 
 # vim:sts=4:sw=4:
