@@ -1,0 +1,12 @@
+diff -urN a/kernel/cobalt/arch/arm/patches/ipipe-core-4.1.18-arm-8.patch b/kernel/cobalt/arch/arm/patches/ipipe-core-4.1.18-arm-8.patch
+--- a/kernel/cobalt/arch/arm/patches/ipipe-core-4.1.18-arm-8.patch	2016-09-09 19:34:44.000000000 +0200
++++ b/kernel/cobalt/arch/arm/patches/ipipe-core-4.1.18-arm-8.patch	2017-03-18 06:43:42.062011519 +0100
+@@ -63,7 +63,7 @@
+ @@ -1718,6 +1731,7 @@ config ALIGNMENT_TRAP
+  config UACCESS_WITH_MEMCPY
+  	bool "Use kernel mem{cpy,set}() for {copy_to,clear}_user()"
+- 	depends on MMU
++ 	depends on MMU && !CPU_SW_DOMAIN_PAN
+ +	depends on !IPIPE
+  	default y if CPU_FEROCEON
+  	help
