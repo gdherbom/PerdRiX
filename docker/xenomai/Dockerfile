@@ -15,7 +15,7 @@ RUN pwd
 
 ## get the sources code
 # Download the cross compilation toolchain
-RUN git clone https://github.com/raspberrypi/tools --depth 1 /opt/rpi3crosscompiletoolchain/tools
+RUN git clone https://github.com/raspberrypi/tools.git --depth 1 /opt/rpi3crosscompiletoolchain/tools
 
 ## get a linux kernel for the Rapsberry Pi (v4.1.x)
 RUN git clone https://github.com/raspberrypi/linux.git -b rpi-4.1.y --depth 1
